@@ -1,0 +1,76 @@
+{% extends 'base.html' %}
+
+
+
+{% block content %}
+<img src="{{post.image.url}}" alt="ciencia" class="image-post">
+   <div class="date">
+       <i class="far fa-clock"></i>
+       <span>27 oct, 2021</span>
+   </div>
+   <h3 class="title">{{ post.title }}</h3>
+   <p class="text">{{ post.body }}</p>
+   <div class="links">
+       <a href="#" class="user">
+           <i class="far fa-user"></i>
+           <span>by {{post.author}}</span>
+       </a>
+       
+   </div>
+   
+    
+  
+    
+{% endblock content %}
+
+{% block categorias %}
+   <div class="box">
+    <h3 class="title">Categorias</h3>
+    <div class="categoria">
+        {% for category in categories %}
+       
+            <a href="{% url 'post:post_category' category.name %}">{{category}} <span>{{category.post_category.count}}</span></a>
+
+        {% endfor %}
+    </div>  
+</div>
+   {% endblock categorias %}
+   {% block popular_post %}
+  <div class="box">
+    <h3 class="title">Posts populares</h3>
+    <div class="p-post">
+        {% for ppost in popular_post %}
+       
+       <a href="{{ppost.get_absolute_url }}" style="text-decoration: none;">
+           <h3>{{ppost}}</h3>
+           <span><i class="far fa-clock"></i>{{ppost.created|date:"d/m/Y"}}</span>
+        </a>
+        
+        {% endfor %}
+    </div>
+</div>
+  {% endblock popular_post %}
+
+    {% block popular_tags %}
+    
+    <div class="box">
+        <h3 class="title">Tags populares</h3>
+        <div class="tags">
+            
+            {% for ptag in popular_tags %}
+            <a style="text-decoration: none;" href="{% url 'post:post_tag' ptag.name %}">{{ptag}}</a>
+            {% endfor %}
+                
+            
+            
+        </div>
+    </div>
+
+    {% endblock popular_tags %}
+
+
+
+{% block contact %}
+   
+{% endblock contact %}
+  

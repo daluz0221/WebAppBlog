@@ -1,0 +1,94 @@
+{% extends 'base.html' %}
+
+
+{% block content %}
+    
+
+{% if user.role == "admin" %}
+
+    
+<h1>Historial de los usuarios del blog </h1>
+
+      
+     
+        
+
+<table class="table" style="font-size: 1.2rem;">
+    <thead>
+        <tr>
+        <th scope="col">ID</th>
+        <th scope="col">Autor</th>
+        <th scope="col">modelo impactado</th>
+        <th scope="col">Título</th>
+        <th scope="col">Acción realizada</th>
+        <th scope="col">Fecha acción</th>
+        
+       
+    </tr>
+    </thead>
+    <tbody>
+    {% for comment in obj %}
+    
+    <tr>
+        <th scope="row">{{ comment.id }}</th>
+        <td>{{ comment.user }}</td>
+        <td>
+            {% if comment.post %}
+                    Post                                
+            {% endif %}
+            
+            {% if comment.category %}
+                    Categoria                               
+            {% endif %}
+
+            {% if comment.comment %}
+                    Comentario                                
+            {% endif %}
+
+        </td>
+        <td>
+            {% if comment.post %}
+                    {{ comment.post }}                                
+            {% endif %}
+            
+            {% if comment.category %}
+                    {{ comment.category }}                                
+            {% endif %}
+
+            {% if comment.comment %}
+                    {{ comment.comment|safe|truncatewords:7 }}                                
+            {% endif %}
+
+        </td>
+        <td>{{ comment.description}}</td>
+        <td>
+            {{ comment.created }}
+        </td>
+        
+        
+    </tr>
+    
+    {% endfor %}
+    
+    </tbody>
+    </table>
+    
+   
+    
+
+        
+        {% include 'pagination.html' with page=page_obj %}
+     
+{% else %}        
+    No tienes acceso a esta página
+{% endif %}  
+
+
+
+{% endblock content %}
+
+
+{% block sidebar %}
+    
+{% endblock sidebar %}
+    

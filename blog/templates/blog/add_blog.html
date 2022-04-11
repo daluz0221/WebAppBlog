@@ -1,0 +1,24 @@
+{% extends 'base.html' %}
+
+
+{% block content %}
+
+<h2>Crear un nuevo post</h2>
+<form method="post" >
+    {% csrf_token %}
+    <!-- {{form.title}}
+    <br>
+    {{form.body}}
+    <br>
+    {{form.category}} -->
+   
+        {{form.media}}
+        {{form.as_p}}
+
+    <button type="submit" class="btn btn-primary">Crear</button>
+</form>
+    
+
+
+{% endblock content %}
+    

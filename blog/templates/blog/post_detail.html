@@ -1,0 +1,144 @@
+{% extends 'blog/index.html' %}
+
+  
+  {% load blog_tags %}
+  
+  {% block title %}My Blog{% endblock %}
+  
+  {% block content %}
+    
+
+    
+    
+    
+      
+
+    
+   
+    
+
+    
+
+
+        
+        
+        <h3 class="title">{{ obj.title }}</h3>
+        <p class="text">
+          {{ obj.body|safe }}
+        </p>
+          <div style="font-size: 2.5rem;">{{ obj.total_likes}}</div>
+          {% if user.is_authenticated %}
+            <form action="{% url 'blog:likes' obj.slug %}" method="post">
+              {% csrf_token %}
+              {% if liked %}
+              <button type="submit"
+                name="like_id"
+                value="{{ obj.id }}"
+                class="btn btn-danger"
+                style="background-color: brown;"
+              >
+                <i class="fa fa-thumbs-up" aria-hidden="true"></i>     
+              unLike
+            </button>
+            
+            {% else %}
+            <button type="submit"
+                name="like_id"
+                value="{{ obj.id }}"
+                class="btn btn-success"
+                style="background-color: green;"
+              >
+                <i class="fa fa-thumbs-up" aria-hidden="true"></i>      
+              
+              Like
+            </button>
+            {% endif %}
+            </form>
+          {% else %}
+            <a href="{% url 'users:login' %}">
+              Iniciar sesion para dar like
+            </a>
+          {% endif %}
+        
+
+        <div class="links">
+            <a href="#" class="user">
+                <i class="far fa-user"></i>
+                <span>by {{obj.author}}</span>
+            </a>
+            
+            <div class="date">
+              <i class="far fa-clock"></i>
+              <span>{{obj.created_date}}</span>
+          </div>
+        </div>
+        <div 
+          style="font-size: 2rem;"
+        >
+          {% if user.is_authenticated %}
+            <a href="{% url 'blog:add_comment' obj.slug %}">
+              <input type="button" class="btn btn-info" value="Agregar un comentario">
+            </a>
+          {% else %}
+            <a href="{% url 'users:login' %}">
+              Iniciar sesion para comentar
+            </a>
+          {% endif %}
+        </div>
+   
+    
+  
+        <div class="post mt-5">
+          <h3>Comentarios</h3>
+          
+          {% if comentarios %}
+            
+          
+            {% for comentario in comentarios %}
+            <div class="row">
+              <div class="col-12" style="border: 1px solid #333; border-radius: .5rem;padding: 1rem;">
+                <p style="display: inline;">{{ comentario.created }}</p>
+                <small style="margin-left: .5rem;"> Autor: {{ comentario.author }}</small>
+                <h4 style="font-size: 1.5rem;">{{ comentario.body|safe }}</h4>
+              </div>
+            </div>
+            
+            
+            
+            {% endfor %}
+          {% else %}
+            <h2>No hay comentarios sobre este post</h2>
+          {% endif %}
+        </div>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+  {% endblock %}
+
+
+  
+  {% block categorias %}
+    
+  {% endblock categorias %}
+    

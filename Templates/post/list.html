@@ -1,0 +1,110 @@
+{% extends 'base.html' %}
+
+           
+           
+               
+
+  
+  {% block content %}
+      
+      {% if posts %}
+          
+      
+      {% if categoria %}
+          <h2 style="color: #672a4eff;font-size: 3rem;" class="alert alert-warning">Resultados de la categoría: {{ categoria|title }}</h2>
+
+      {% endif %}
+
+      
+      {% if tag %}
+          <h2 style="color: #672a4eff;font-size: 3rem;" class="alert alert-warning">Resultados de la etiqueta: {{ tag|title }}</h2>
+      {% endif %}
+          
+          
+         
+  {% for post in posts %}
+  
+   <a href="{{post.get_absolute_url }}"><img src="{{post.image.url}}" alt="ciencia" class="image-post"></a>
+   <div class="date">
+       <i class="far fa-clock"></i>
+       <span>{{post.created|date:"d/m/Y"}}</span>
+   </div>
+   <h3 class="title">{{ post.title }}</h3>
+   <p class="text">{{ post.body }}</p>
+   <div class="links">
+       <a href="#" class="user">
+           <i class="far fa-user"></i>
+           <span>by {{post.author}}</span>
+       </a>
+       
+   </div>
+   
+  {% endfor %}
+
+   {% include 'pagination.html' with page=page_obj  %}
+
+   {% else %}
+   <h2>De momento no hay posts activos</h2>
+
+   {% endif %}
+   
+  
+       
+   
+   {% block contact %}
+       
+   {% endblock contact %}
+
+   
+   
+       
+       
+  {% endblock content %}
+
+  {% block categorias %}
+  <div class="box">
+   <h3 class="title">Categorias</h3>
+   <div class="categoria">
+       {% for category in categories %}
+      
+           <a href="{% url 'post:post_category' category.name %}">{{category}} <span>{{category.post_category.count}}</span></a>
+
+       {% endfor %}
+       </div>  
+   </div>
+  {% endblock categorias %}
+
+  
+  {% block popular_post %}
+  <div class="box">
+    <h3 class="title">Posts populares</h3>
+    <div class="p-post">
+        {% for ppost in popular_post %}
+       
+       <a href="{{ppost.get_absolute_url }}" style="text-decoration: none;">
+           <h3>{{ppost}}</h3>
+           <span><i class="far fa-clock"></i>{{ppost.created|date:"d/m/Y"}}</span>
+        </a>
+        
+        {% endfor %}
+    </div>
+</div>
+  {% endblock popular_post %}
+      
+  {% block popular_tags %}
+    
+  <div class="box">
+      <h3 class="title">Tags populares</h3>
+      <div class="tags">
+          
+          {% for ptag in popular_tags %}
+          <a style="text-decoration: none;" href="{% url 'post:post_tag' ptag.name %}">{{ptag}}</a>
+          {% endfor %}
+              
+          
+          
+      </div>
+  </div>
+
+  {% endblock popular_tags %}      
+

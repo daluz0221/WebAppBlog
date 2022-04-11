@@ -1,0 +1,238 @@
+{% load blog_tags %}
+{% load static %}
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta2/css/all.min.css" integrity="sha512-YWzhKL2whUzgiheMoBFwW8CKV4qpHQAEuvilg9FAn5VJUDwKZZxkJNuGM4XkWuk94WCrrwslk8yWNGmY1EduTA==" crossorigin="anonymous" referrerpolicy="no-referrer" />
+
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.1.3/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-1BmE4kWBq78iYhFldvKuhfTAU6auU8tT94WrHftjDbrCEXSU1oBoqyl2QvZ6jIW3" crossorigin="anonymous">
+
+    <link rel="stylesheet" type="text/css" href="https://cdn.jsdelivr.net/npm/daterangepicker/daterangepicker.css" />
+
+    <link rel="stylesheet" href="{% static 'css/base.css' %}">
+    
+    {% block css %}
+       
+    {% endblock css %}
+        
+    
+    <title>Blog</title>
+</head>
+<body>
+   <!-- header starts -->
+<header class="header">
+
+   <a href="{% url 'blog:post_list' %}" class="logo">Roiback <span>Blog</span></a>
+
+   <nav class="navbar">
+     
+   </nav>
+
+   <div class="icons">
+       <i class="fas fa-bars" id="menu-bars"></i>
+       <i class="fas fa-search" id="search-icon"></i>
+   </div>
+   
+   {% block perfil %}
+       
+   
+   {% if user.is_authenticated %}
+   <h3 style="margin-left: 1.5rem;margin-right: .5rem;">
+       Bienvenido: {{user.username}}
+    </h3>
+    
+    <a href="{% url 'blog:perfil' %}" >
+        <button class="btn" style="font-size: 1.2rem;margin-left: 1.5rem;">ver perfil</button>
+    </a>
+    {% else %}
+    
+    <button class="btn" style="font-size: 1.2rem;margin-left: 1.5rem;">
+        <a href="{% url 'users:login' %}" style="color: #fff;">
+            Iniciar sesion
+        </a>
+    </button>
+    {% endif %}
+    {% endblock perfil %}
+   <form class="searchform" action="{% url 'blog:post_list_palabra_clave' %}" method="GET">
+       {% csrf_token %}
+       <input type="text" name="search" id="search" placeholder="Buscar blog..." class="search-box">
+       <button type="submit" style="font-size: 2rem;
+       padding-left: 1rem;
+       padding-right: .5rem;
+       cursor: pointer;
+       color: var(--black);"   class="fas fa-search"></button>
+   </form>
+
+</header>
+<!-- header ends -->
+
+
+<!-- Banner section starts -->
+
+
+{% block banner %}
+<section id="banner" class="banner">
+
+    <div class="content">
+        <h3>Roiback</h3>
+        <p>La mejor opción a la hora de impulsar tus hoteles </p>
+        
+    </div>
+
+</section>
+{% endblock banner %}
+    
+
+<!-- Banner section ends -->
+
+
+<!-- post section starts -->
+    
+    
+    
+        
+    
+{% block main %}
+<section id="#posts" class="container">
+    
+    {% block grande %}
+        
+    
+    <div class="posts-container">
+        <div class="post">
+            {% block content %}
+            
+            {% endblock content %}
+        </div> 
+    </div>
+    {% endblock grande %}
+
+    
+    {% block sidebar %}
+    <div class="sidebar">
+
+        
+        {% block acerca_de %}
+            
+        
+        <div class="box">
+            <h3 class="title">Acerca de mi</h3>
+            
+            <div class="about">
+                <img src="{% static 'img/pic-2.jpg' %}" alt="user" class="image-user">
+                <h3>Dueño del Blog</h3>
+                <p>Lorem ipsum dolor sit amet consectetur adipisicing elit. Odio reiciendis voluptatem</p>
+                
+            </div>
+            
+        </div>
+        
+        {% endblock acerca_de %}
+      <div class="box">
+            <h3 class="title">Roiback Blog</h3>
+            <p class="roiback-posts">Hay {% total_posts %} posts publicados actualmente en el blog.</p>
+      </div>
+
+
+      
+      {% block filtro_fechas %}
+         
+      {% endblock filtro_fechas %}
+         
+      
+        
+        {% block categorias %}
+            
+        
+        
+        {% endblock categorias %}
+
+        
+        {% block popular_post %}
+        <div class="box">
+         <h3 class="title">Últimos post</h3>
+         <div class="p-post">
+             
+             {% show_latest_posts 3 %}
+
+         </div>
+     </div>
+        {% endblock popular_post %}
+            
+        
+        
+            
+        
+
+    </div>
+    {% endblock sidebar %}
+        
+
+</section>
+{% endblock main %}
+    
+
+<!-- post section ends -->
+
+
+
+
+
+
+
+
+
+
+
+
+ <div id="content">
+ {% block content2 %}
+ {% endblock %}
+ </div>
+ <div id="sidebar">
+ 
+ 
+ 
+    
+ 
+ 
+ </div>
+
+ <!-- footer starts -->
+
+ <section class="footer">
+
+   <div class="follow">
+       <a href="#" class="fab fa-facebook-f"></a>
+       <a href="#" class="fab fa-twitter"></a>
+       <a href="#" class="fab fa-instagram"></a>
+       <a href="#" class="fab fa-linkedin"></a>
+   </div>
+
+   <div class="credit">
+       Creado por <span>Luis Felipe Echeverry</span>
+   </div>
+
+</section>
+
+<!-- footer ends -->
+
+ <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.1.3/dist/js/bootstrap.bundle.min.js" integrity="sha384-ka7Sk0Gln4gmtz2MlQnikT1wXgYsOg+OMhuP+IlRH9sENBO0LRn5q+8nbTov4+1p" crossorigin="anonymous"></script>
+ <script src="{% static 'js/main.js' %}"></script>
+ 
+<script type="text/javascript" src="https://cdn.jsdelivr.net/jquery/latest/jquery.min.js"></script>
+<script type="text/javascript" src="https://cdn.jsdelivr.net/momentjs/latest/moment.min.js"></script>
+<script type="text/javascript" src="https://cdn.jsdelivr.net/npm/daterangepicker/daterangepicker.min.js"></script>
+
+ 
+ {% block js %}
+    
+ {% endblock js %}
+    
+</body>
+</html>
+

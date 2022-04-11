@@ -1,0 +1,12 @@
+
+    {% for post in latest_posts %}
+    
+    <a href="{% url 'blog:post_detail' post.slug %}">
+        <h3> {{ post.title }}</h3>
+        <span><i class="far fa-clock">
+            {{ post.created_date }}
+        </i></span>
+    </a>
+    
+    {% endfor %}
+   

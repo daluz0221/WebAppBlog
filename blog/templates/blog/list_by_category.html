@@ -1,0 +1,52 @@
+{% extends "blog/index.html" %}
+{% load blog_tags %}
+{% block title %}My Blog{% endblock %}
+{% block content %}
+
+
+<div class="posts-container">
+<h3 style="font-size: 3.5rem;">Categoria: {{category}}</h3>
+   
+   
+{% if obj %}
+ {% for post in obj %}
+ <div class="post">
+      <h3 class="title"><a href="{% url 'blog:post_detail' post.slug %}">
+         {{ post.title }}
+      </a></h3>
+      <p class="text">
+         <p>{{ post.body }}</p>
+      </p>
+      <div class="links">
+         <a href="#" class="user">
+            <i class="far fa-user"></i>
+            <span>by {{ post.author }}</span>
+         </a>
+         
+         <div class="date">
+            <i class="far fa-clock"></i>
+            <span>{{post.created_date}}</span>
+         </div>
+      </div>
+   </div>
+ {% endfor %}
+ {% else %}
+ <p>No hay posts que coincidan con la busqueda</p>
+ 
+ {% endif %}
+ 
+</div>
+ {% include 'pagination.html' with page=page_obj %}
+
+
+
+{% endblock %}
+
+
+
+
+
+
+
+{% block categorias %}
+{% endblock %}

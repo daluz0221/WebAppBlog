@@ -1,0 +1,433 @@
+{% extends 'base.html' %}
+
+
+{% block perfil %}
+    
+{% endblock perfil %}
+    
+
+
+
+{% block content %}
+
+        
+    
+    
+    <div class="container" style="background-color: #fff;">
+        <div class="row" >
+                <div class="col-5">
+                    <button class="btn btn-success" style="background-color: rgb(16, 150, 16); ">
+                        <a href="{% url 'blog:add_blog' %}" style="color: #fff;">
+                            Crear nuevo post
+                            </a>
+                    </button>
+                </div>
+         
+                <div class="col-2"></div>
+            {% if user.role == "admin" %}
+                
+            
+            <div class="col-5 ">
+                <button class="btn btn-success" style="background-color: rgb(16, 150, 16); ">
+                    <a href="{% url 'blog:add_category' %}" style="color: #fff;">
+                        Crear nueva Categoria
+                    </a>
+                </button>
+            </div>
+            {% endif %}
+        </div>
+    </div>
+    
+     <br><br>
+     
+     {% if user.role == "admin" %}
+       
+    
+    {% if all_post %}
+        
+   <h2>Tabla de post del blog</h2> 
+        
+    <table class="table" style="font-size: 1.2rem;">
+    <thead>
+        <tr>
+        <th scope="col">ID</th>
+        <th scope="col">Título</th>
+        <th scope="col">Fecha creación</th>
+        <th scope="col">Fecha actualización</th>
+        <th scope="col">Estado</th>
+        <th scope="col">Autor</th>
+        <th scope="col">Acciones</th>
+    </tr>
+    </thead>
+    <tbody>
+    {% for post in all_post %}
+    
+    <tr>
+        <th scope="row">{{ post.id }}</th>
+        <td>{{ post.title }}</td>
+        <td>{{ post.created_date }}</td>
+        <td>
+    
+            {% if post.updated_data != post.created_date  %}
+            {{ post.updated_data }}
+            {% else %}
+            No actualizado aun
+    
+            {% endif %}
+    
+        </td>
+        <td>
+    
+            {% if post.active %}
+                Activo
+            {% else %}
+                Inactivo
+            {% endif %}
+    
+        </td>
+        <td>{{ post.author }}</td>
+        <td>
+            <div class="row">
+                <div class="col-2">
+                    <a href="{% url 'blog:post_detail' post.slug %}">
+                        ver
+                    </a>
+                </div>
+                <div class="col-2">
+                    <a href="{% url 'blog:post_updated' post.id %}">
+                        editar
+                    </a>
+                </div>
+                <div class="col-2">
+                    <a href="{% url 'blog:post_deleted' post.slug %}">
+                        
+                    </a>
+                </div>
+                <div class="col-3">
+                    <!-- Este link dirige a la página donde se programa una fecha para activar el post seleccionado -->
+                    <a href="{% url 'blog:program_active_post' post.slug %}">
+                        Act
+                    </a>
+                </div>
+                <div class="col-3">
+                    <!-- Este link dirige a la página donde se programa una fecha para desactivar el post seleccionado -->
+
+                    <a href="{% url 'blog:program_deactive_post' post.slug %}">
+                        Deact
+                    </a>
+                </div>
+            </div>
+        </td>
+    </tr>
+    
+    {% endfor %}
+    
+    </tbody>
+    </table>
+    {% else %}
+    <h2>El blog todavía no hay publicado post</h2>
+    {% endif %}
+
+    <br><br>
+    {% if all_comments %}
+        
+    <h2>Tabla de comentarios del blog</h2>
+        
+
+    <table class="table" style="font-size: 1.2rem;">
+    <thead>
+        <tr>
+        <th scope="col">ID</th>
+        <th scope="col">contenido</th>
+        <th scope="col">post comentado</th>
+        <th scope="col">Fecha creación</th>
+        <th scope="col">Fecha actualización</th>
+        <th scope="col">Estado</th>
+        <th scope="col">Autor</th>
+        <th scope="col">Acciones</th>
+    </tr>
+    </thead>
+    <tbody>
+    {% for comment in all_comments %}
+    
+    <tr>
+        <th scope="row">{{ comment.id }}</th>
+        <td>{{ comment.body|safe|truncatewords:8 }}</td>
+        <td>{{ comment.post.title|truncatewords:8 }}</td>
+        <td>{{ comment.created }}</td>
+        <td>
+    
+            {% if  comment.updated == comment.created %}
+                No actualizado aun
+            {% else %}
+                {{ comment.updated }}
+            {% endif %}
+    
+        </td>
+        <td>
+    
+            {% if comment.active %}
+                Activo
+            {% else %}
+                Inactivo
+            {% endif %}
+    
+        </td>
+        <td>{{ comment.author }}</td>
+        <td>
+            <div class="row">
+                <div class="col-3">
+                    <a href="{% url 'blog:post_detail' comment.post.slug %}">
+                        ver
+                    </a>
+                </div>
+                <div class="col-3">
+                    <a href="{% url 'blog:comment_updated' comment.id %}">
+                        editar
+                    </a>
+                </div>
+    
+            </div>
+        </td>
+    </tr>
+    
+    {% endfor %}
+    
+    </tbody>
+    </table>
+    {% else %}
+    <h2>No hay comentarios en el blog todavía</h2>
+    {% endif %}
+    
+    {% else %}
+    
+    
+    {% if obj %}
+    
+    
+    
+    
+    
+    <table class="table" style="font-size: 1.2rem;">
+    <thead>
+        <tr>
+            <th scope="col">ID</th>
+            <th scope="col">Título</th>
+            <th scope="col">Fecha creación</th>
+            <th scope="col">Fecha actualización</th>
+            <th scope="col">Estado</th>
+            <th scope="col" class="text-center">Acciones</th>
+        </tr>
+    </thead>
+    <tbody>
+        {% for post in user_post %}
+    
+        <tr>
+            <th scope="row">{{ post.id }}</th>
+            <td>{{ post.title }}</td>
+            <td>{{ post.created_date }}</td>
+            <td>
+                {% if  post.updated_data == post.created_data %}
+                No actualizado aun
+            {% else %}
+                {{ post.updated_data }}
+            {% endif %}
+            </td>
+            <td>
+    
+                {% if post.active %}
+                    Activo
+                {% else %}
+                    Inactivo
+                {% endif %}
+    
+            </td>
+            <td>
+                <div class="row">
+                    <div class="col-4">
+                        <a href="{% url 'blog:post_detail' post.slug %}">
+                            ver
+                        </a>
+                    </div>
+                    <div class="col-4">
+                        <a href="{% url 'blog:post_updated' post.id %}">
+                            editar
+                        </a>
+                    </div>
+                    <div class="col-4">
+                        <a href="{% url 'blog:post_deleted' post.slug %}">
+                            eliminar
+                        </a>
+                    </div>
+                   
+            </div>
+        </td>
+    </tr>
+    
+    {% endfor %}
+    
+    </tbody>
+    
+    </table>
+    {% else %}
+    <h3>No has publicado post todavía</h3>
+    {% endif %}
+    
+    {% if user_comments %}
+    
+    
+    <table class="table" style="font-size: 1.2rem;">
+    <thead>
+        <tr>
+        <th scope="col">ID</th>
+        <th scope="col">contenido</th>
+        <th scope="col">post comentado</th>
+        <th scope="col">Fecha creación</th>
+        <th scope="col">Fecha Actualización</th>
+        <th scope="col">Estado</th>
+        <th scope="col">Acciones</th>
+    </tr>
+    </thead>
+    <tbody>
+    {% for comment in user_comments %}
+    
+    <tr>
+        <th scope="row">{{ comment.id }}</th>
+        <td>{{ comment.body|safe|truncatewords:8 }}</td>
+        <td>{{ comment.post.title }}</td>
+        <td>{{ comment.created }}</td>
+        <td>
+            {% if  comment.updated == comment.created %}
+                No actualizado aun
+            {% else %}
+                {{ comment.updated }}
+            {% endif %}
+        </td>
+        <td>
+    
+            {% if comment.active %}
+                Activo
+            {% else %}
+                Inactivo
+            {% endif %}
+    
+        </td>
+        <td>
+            <div class="row">
+                <div class="col-3">
+                    <a href="{% url 'blog:post_detail' comment.post.slug %}">
+                        ver
+                    </a>
+                </div>
+                <div class="col-3">
+                    <a href="{% url 'blog:comment_updated' comment.id %}">
+                        editar
+                    </a>
+                </div>
+    
+            </div>
+        </td>
+    </tr>
+    
+    {% endfor %}
+    
+    </tbody>
+    </table>
+    {% else %}
+    <h3>No has comentado ningun post hasta el momento</h3>
+    {% endif %}
+    
+    
+    {% endif %}
+    
+   
+
+
+{% endblock content %}
+
+
+
+
+{% block sidebar %}
+    <div class="sidebar">
+        <div class="box">
+            <h3 class="title">Perfil</h3>
+            
+            <div class="about">
+                
+                <h4>hola {{ user.username }}</h4>
+                
+                <div class="follow">
+                    <a href={% url 'users:logout' %}>
+                        cerrar sesion
+                         </a>
+                         <a href="{% url 'users:password' %}">
+                        Actualizar datos
+                         </a>
+                        
+                        
+                        
+                        
+                         <a href="{% url 'blog:user_history' %}">
+                         ver mi historial de acciones
+                         </a>
+                </div>
+            </div>
+            
+        </div>
+
+        {% if user.role == "admin" %}
+        <div class="box">
+            <h3 class="title">Usuario admin</h3>
+            
+            <div class="about" style="font-size: 1.5rem;">
+ 
+                <a href="{% url 'blog:all_actions' %}" class="list_all_users">
+                    ver el historial de acciones de todos los usuarios
+                    </a>
+                    
+                <div class="follow" style="border-top: .1rem solid rgba(0,0,0,.2);">
+                        <p>Usuarios del blog</p>
+                        
+                        
+                        {% for user in users %}
+                        <div class="row mt-2">
+                            <div class="col-6">
+                                <h3 class="mt-4">{{ user.username }}</h3>
+                            </div>
+                            <div class="col-6">
+                                <form action="{% url 'blog:change_role' user.id %}" method="post">
+                                    {% csrf_token %}
+                                    <button type="submit"
+                                        name="role_id"
+                                        value="{{ user.id }}"
+                                        class="btn btn-primary"
+                                        style="font-size: 1rem;"
+                                    >
+            
+                                       {% if user.role == "admin" %}
+                                       dejar de ser admin
+                                       {% else %}
+                                       ser admin
+                                       {% endif %}
+                                     </button>
+                                    </form>
+                            </div>
+                        </div>
+                        
+                        {% endfor %}
+                        
+                       
+                        
+                       
+                      
+                </div>
+            </div>
+            
+        </div>
+        {% endif %}
+
+    </div>
+    
+{% endblock sidebar %}
+    

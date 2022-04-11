@@ -1,0 +1,95 @@
+{% extends "base.html" %}
+{% load blog_tags %}
+{% block title %}My Blog{% endblock %}
+{% block content %}
+
+
+ <div class="posts-container">
+
+   {% if obj %}
+   {% for post in obj %}
+   <div class="post">
+       
+       
+       <h3 class="title"><a href="{% url 'blog:post_detail' post.slug %}">
+         {{ post.title }}
+       </a></h3>
+       <p class="text">
+         <p>{{ post.body|safe }}</p>
+       </p>
+       
+       <div class="links">
+           <a href="#" class="user">
+               <i class="far fa-user"></i>
+               <span>by {{ post.author }}</span>
+           </a>
+           
+           <div class="date">
+            <i class="far fa-clock"></i>
+            <span>{{post.created_date}}</span>
+        </div>
+       </div>
+   </div>
+
+   {% endfor %}
+{% else %}
+<p>No hay posts que coincidan con la busqueda</p>
+
+{% endif %}
+   
+ 
+ {% include 'pagination.html' with page=page_obj %}
+
+ 
+
+</div>
+
+
+
+
+{% endblock %}
+
+{% block categorias %}
+
+
+
+
+   <div class="box">
+      <h3 class="title">Categorias</h3>
+      <div class="categoria">
+            {% for category in categories %}
+            <a href="{% url 'blog:post_list_by_category' category.slug %}">{{ category.name }} <span>{{category.posts.count}}</span> </a>
+            {% endfor %}
+      </div>
+   </div>
+      
+{% endblock categorias %}
+
+
+{% block filtro_fechas %}
+<div class="box">
+   <h3 class="title">Busqueda por rango de fechas</h3>
+   <div class="roiback-fechas">
+      <form action="{% url 'blog:post_by_date' %}" method="get">
+         <label for="fecha1">Fecha de inicio</label>
+         <input type="date" name="fecha1" id="fecha1" value="">
+         
+         <label for="fecha2">Fecha final</label>
+         <input type="date" name="fecha2" id="fecha2" >
+
+         <input type="submit" value="Buscar"  class="btn btn-warning mt-2">
+
+
+
+      </form>
+   </div>
+</div>
+{% endblock filtro_fechas %}
+   
+
+
+
+
+{% block js %}
+
+{% endblock js %}

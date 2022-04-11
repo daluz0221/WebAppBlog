@@ -1,0 +1,27 @@
+
+{% extends 'base.html' %}
+
+
+
+{% block content %}
+    
+
+
+
+{% if user.is_authenticated %}
+    <form method="post">
+        {% csrf_token %}
+        
+            <button type="submit" class="btn" style="background-color: rgb(156, 8, 8);">Inactivar post</button>
+            <button class="btn " style="background-color: green;"><a style="color: #fff;" href="{% url 'blog:perfil' %}" >Cancelar</a></button>
+        
+    </form>
+{% else %}
+<h3>No tienes acceso a esta página</h3>
+<a href="{% url 'users:login' %}">
+    Iniciar sesion
+</a>
+{% endif %}
+    
+
+{% endblock %}

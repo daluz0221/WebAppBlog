@@ -1,0 +1,53 @@
+
+{% extends 'base.html' %}
+
+
+{% block content %}
+    
+
+
+{% if user.is_authenticated %}
+
+
+{% if user.role == "admin" or user.id == post.author.id %}
+<h1>Modificar post</h1>
+
+
+
+
+
+<form method="post">
+    {% csrf_token %}
+    {{form.media}}
+    <h2>Título: {{form.title}}</h2>
+    <br>
+    {{form.body}}
+    <br>
+    <p style="width: 100%;font-size: 1.5rem;">Categoría: <span style="width: 100%;">{{form.category}}</span></p>
+    {% if user.role == "admin" %}
+    <br>
+    <p style="font-size: 1.5rem;">Autor: {{post.author.username}}</p>
+    <p style="font-size: 1.5rem;">activo: {{form.active}}</p>
+    
+    {% endif %}
+    
+    <button type="submit" class="btn" style="display: block;">Modificar</button>
+</form>
+
+{% else %}
+
+<h1>No tienes permisos para modificar este post!!!</h1>
+{% endif %}
+{% else %}
+<h1>No tienes permisos para modificar este post</h1>
+
+{% endif %}
+
+{% endblock content %}
+
+
+
+{% block sidebar %}
+    
+{% endblock sidebar %}
+    

@@ -1,0 +1,23 @@
+{% extends 'base.html' %}
+{% load crispy_forms_tags %}
+
+{% block content %}
+
+<h2>Crear nueva categoria</h2>
+<form method="post" >
+    {% csrf_token %}
+    <!-- {{form.title}}
+    <br>
+    {{form.body}}
+    <br>
+    {{form.category}} -->
+   
+       
+        {{form|crispy}}
+
+    <button type="submit" class="btn btn-primary">Crear</button>
+</form>
+    
+
+
+{% endblock content %}

@@ -1,0 +1,36 @@
+
+{% extends 'base.html' %}
+
+
+{% load crispy_forms_tags %}
+
+{% block content %}
+    
+
+
+{% if user.is_authenticated %}
+
+
+<form method="post">
+    {% csrf_token %}
+    <h2>Elige la fecha en la que deseas activar el blog seleccionado</h2>
+    {{form|crispy}}
+    <button type="submit" class="btn">Agregar</button>
+</form>
+
+
+{% else %}
+
+<h1>No tienes permisos para entrar a esta página</h1>
+
+
+{% endif %}
+    
+{% endblock content %}
+
+
+
+{% block sidebar %}
+    
+{% endblock sidebar %}
+    

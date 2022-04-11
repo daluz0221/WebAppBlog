@@ -1,0 +1,72 @@
+{% extends 'base.html' %} 
+
+
+{% block css %}
+    <style>
+        .alert{
+            margin-top: 20rem;
+            margin-bottom: 24%;
+            font-size: 3rem;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+        }
+
+        .alert h4{
+            font-size: 5rem;
+        }
+
+        #enviopost{
+            margin-top: 20rem;
+        }
+
+        
+    </style>
+{% endblock css %}
+    
+
+{% block banner %}
+   
+{% endblock banner %}
+    
+{% block main %} 
+{% if sent %}
+
+<div class="alert alert-success" role="alert">
+    <svg class="bi flex-shrink-0 me-2" width="24" height="24" role="img" aria-label="Success:"><use xlink:href="#check-circle-fill"/></svg>
+    <h4 class="alert-heading">Correo enviado con éxito!</h4>
+    <p>"{{ post.title }}" fue enviado con éxito a {{ form.cleaned_data.para }}.</p>
+    <hr>
+   
+        <p class="mb-0"><a href="{% url 'post:post_list' %}" class="btn">Volver al inicio</a></p>
+        
+  
+  </div>
+{% else %}
+
+
+
+
+<section class="contact" id="enviopost">
+
+    <form method="POST">
+        {% csrf_token %}
+        <h3>Compartir "{{ post.title }}"por correo</h3>
+        <div class="inputBox">
+            <input type="text" name="nombre" maxlength="25" required id="id_nombre" placeholder="Nombre">            
+            <input type="text" name="apellido" maxlength="25" required id="id_apellido" placeholder="Apellido">            
+        </div>
+        <div class="inputBox">
+            <input type="email" name="email" required id="id_email" placeholder="Correo">
+            <input type="email" name="para" required id="id_para" placeholder="Para">
+        </div>
+        <textarea name="comentarios" id="id_comentarios" placeholder="Comentarios" cols="40" rows="10"></textarea>
+        <input type="submit" value="Compartir" class="btn">
+    </form>
+
+</section>
+{% endif %} 
+{% endblock %}
+
+{% block contact %}
+{% endblock %}

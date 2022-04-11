@@ -1,0 +1,26 @@
+
+{% extends 'base.html' %}
+
+
+{% block content %}
+    
+
+{% if user.is_authenticated %}
+<h1>Agregar comentario</h1>
+<form method="post">
+    {% csrf_token %}
+    {{form.media}}
+    {{form.as_p}}
+    <button type="submit" class="btn">Agregar</button>
+</form>
+{% else %}
+
+    <a href="{% url 'users:login' %}">
+        Iniciar sesion para comentar
+    </a>
+    
+    {% endif %}
+
+
+{% endblock content %}
+
